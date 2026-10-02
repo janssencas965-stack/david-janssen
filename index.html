@@ -11,428 +11,625 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="David Janssen">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121419" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16171a" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="David Janssen">
 <meta property="og:description" content="Songwriter · muzikant · creatieveling">
 <meta property="og:image" content="img/david-portret.jpg">
-<style>
-/* Basis: ruimte voor de notch en de thuisbalk van de iPhone */
-:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
-body { margin: 0; }
-img { max-width: 100%; }
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;600&family=Kalam:wght@400&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: songwriter's notebook — zwart-wit foto, naam groot, daaronder een tracklist als achterkant van een cassettehoesje, dan het verhaal. Desktop: foto plakt links, inhoud rechts. */
+/* Layout: een songschrift als app. Licht papier met blauwe lijntjes en een rode kantlijn,
+   balpen-blauw voor alles wat je aanraakt, markeerstift voor één accent per scherm.
+   Drie tabbladen onderaan; de speler zweeft erboven. */
 :root {
-  --papier: #eceef1;
-  --vlak: #f8f9fa;
-  --inkt: #15171c;
-  --gedempt: #5a5f6b;
-  --lijn: #cfd3da;
-  --bic: #2743b0;        /* balpen-blauw, de kleur van een tekstschrift */
-  --bic-zacht: #2743b014;
-  --plaat: #15171c;      /* vinyl / podium-ondergrond, in beide thema's donker */
+  --papier: #f9f9f7;
+  --vel: #ffffff;
+  --inkt: #1f2024;
+  --potlood: #6a6b72;
+  --lijn: #dde2ea;
+  --kantlijn: #e9b3b3;
+  --bic: #2a46b8;
+  --bic-zacht: #2a46b812;
+  --stift: #f6e56f;
+  --plaat: #1b1c20;
   --groef: #e9ebef;
-  --f-display: "Gloock", "Georgia", serif;
+  --schaduw: 0 1px 2px #1f202414, 0 8px 24px -12px #1f202430;
+
+  --f-kop: "Young Serif", Georgia, serif;
   --f-tekst: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --f-hand: "Caveat", "Bradley Hand", cursive;
+  --f-hand: "Kalam", "Bradley Hand", "Segoe Print", cursive;
   --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --tabhoogte: 64px;
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --papier: #121419; --vlak: #1b1e25; --inkt: #e9ebef; --gedempt: #9aa0ad;
-    --lijn: #2d313b; --bic: #8fa5ff; --bic-zacht: #8fa5ff1c; --plaat: #07080b; --groef: #c9cfdb; color-scheme: dark;
+    --papier: #16171a; --vel: #1f2024; --inkt: #ecedf0; --potlood: #a1a3ab; --lijn: #2c2f37;
+    --kantlijn: #6e3d42; --bic: #93a8ff; --bic-zacht: #93a8ff17; --stift: #6b6122;
+    --plaat: #0b0c0e; --groef: #cfd4de; --schaduw: 0 1px 2px #0006, 0 8px 24px -12px #000a; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --papier: #121419; --vlak: #1b1e25; --inkt: #e9ebef; --gedempt: #9aa0ad;
-  --lijn: #2d313b; --bic: #8fa5ff; --bic-zacht: #8fa5ff1c; --plaat: #07080b; --groef: #c9cfdb; color-scheme: dark;
+  --papier: #16171a; --vel: #1f2024; --inkt: #ecedf0; --potlood: #a1a3ab; --lijn: #2c2f37;
+  --kantlijn: #6e3d42; --bic: #93a8ff; --bic-zacht: #93a8ff17; --stift: #6b6122;
+  --plaat: #0b0c0e; --groef: #cfd4de; --schaduw: 0 1px 2px #0006, 0 8px 24px -12px #000a; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
-  background: var(--papier); color: var(--inkt);
+  margin: 0; background: var(--papier); color: var(--inkt);
   font: 400 1.0625rem/1.65 var(--f-tekst);
-  padding-inline: 16px; padding-block: 0 120px;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
 }
-.pagina {
-  max-width: 1120px; margin: 0 auto;
-  display: grid; gap: 32px; padding-block: 16px 0;
-}
-@media (min-width: 880px) {
-  .pagina { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; padding-block: 48px 0; }
-  .foto img { width: auto; max-height: calc(100vh - 140px); }
-}
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--bic); outline-offset: 3px; border-radius: 4px; }
 
-/* Foto */
-.foto { margin: 0; position: relative; }
-.foto img {
-  display: block; width: 100%; max-width: 100%; height: auto;
-  border-radius: 4px; filter: contrast(1.05);
+/* ---------- App-skelet ---------- */
+.app { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.scroller {
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding-top: env(safe-area-inset-top, 0px);
 }
-.foto figcaption {
-  font: 500 1.35rem/1.1 var(--f-hand); color: var(--bic);
-  margin-top: 8px; transform: rotate(-1.5deg); transform-origin: left;
+.scherm {
+  max-width: 720px; margin: 0 auto;
+  padding-inline: 20px; padding-block: 28px 140px;
+  animation: in .35s cubic-bezier(.2,.8,.2,1);
 }
+@keyframes in { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* Kop */
-.kop { display: grid; gap: 8px; }
-h1 {
-  font: 400 clamp(3.2rem, 11vw, 5.6rem)/0.92 var(--f-display);
-  letter-spacing: -0.02em; margin: 0; text-wrap: balance;
+/* Tabbalk */
+.tabs {
+  background: var(--vel); border-top: 1px solid var(--lijn);
+  padding-bottom: env(safe-area-inset-bottom, 0px); position: relative; z-index: 5;
 }
-.rollen {
-  font: 500 0.8rem/1.4 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--gedempt); margin: 0;
+.tabs-binnen { max-width: 720px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); }
+.tab {
+  height: var(--tabhoogte); border: 0; background: none; cursor: pointer;
+  display: grid; place-items: center; align-content: center; gap: 2px;
+  color: var(--potlood); font-size: .75rem; font-weight: 500; letter-spacing: .02em;
 }
-.motto { font-size: 1.2rem; line-height: 1.5; margin: 12px 0 0; max-width: 34ch; }
-.motto em { font-style: normal; color: var(--bic); }
+.tab svg { width: 24px; height: 24px; }
+.tab[aria-selected="true"] { color: var(--bic); }
+.tab[aria-selected="true"] span { background: linear-gradient(transparent 55%, var(--stift) 55%); padding: 0 3px; color: var(--inkt); }
 
-.inhoud { display: grid; gap: 56px; min-width: 0; }
-h2 {
-  font: 400 1.9rem/1.1 var(--f-display); margin: 0 0 4px;
-}
-.sub { color: var(--gedempt); margin: 0 0 16px; font-size: 0.95rem; }
+/* ---------- Typografie ---------- */
+h1, h2, h3 { font-family: var(--f-kop); font-weight: 400; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.3rem, 9vw, 3.2rem); line-height: 1; letter-spacing: -.01em; }
+h2 { font-size: 1.6rem; line-height: 1.15; }
+.label { font: 500 .72rem/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--potlood); }
+.hand { font-family: var(--f-hand); color: var(--bic); line-height: 1.3; }
+.stift { background: linear-gradient(transparent 52%, var(--stift) 52%, var(--stift) 92%, transparent 92%); padding: 0 2px; }
+p { margin: 0; }
 
-/* Tracklist */
-.tracks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--inkt); }
-.track {
-  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center;
-  padding: 14px 4px; border-bottom: 1px solid var(--lijn);
-  cursor: pointer; transition: background .2s;
-}
-.track:hover { background: var(--bic-zacht); }
-.track.speelt { background: var(--bic-zacht); }
-.speel {
-  width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--inkt);
-  background: transparent; color: var(--inkt); display: grid; place-items: center; cursor: pointer; padding: 0;
-}
-.track.speelt .speel { background: var(--bic); border-color: var(--bic); color: var(--papier); }
-.speel:focus-visible, .mini button:focus-visible, .balk:focus-visible { outline: 2px solid var(--bic); outline-offset: 3px; }
-.speel svg { width: 16px; height: 16px; }
-.titel { font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
-.track.speelt .titel { color: var(--bic); }
-.meta { font-size: 0.88rem; color: var(--gedempt); line-height: 1.4; }
-.label {
-  display: inline-block; font: 500 0.68rem/1 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase;
-  border: 1px solid currentColor; border-radius: 3px; padding: 3px 5px 2px; margin-left: 6px; vertical-align: 2px;
-}
-.duur { font: 400 0.85rem var(--f-mono); color: var(--gedempt); font-variant-numeric: tabular-nums; }
+/* ---------- Luister ---------- */
+.kop { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; }
+.kop img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: 60% 25%; filter: grayscale(1) contrast(1.05); }
+.kop .label { margin-bottom: 4px; }
+.motto { font-size: 1.35rem; margin-top: 18px; max-width: 30ch; transform: rotate(-.6deg); color: var(--inkt); }
 
-/* Verhaal: tekst links, beeld rechts */
-.breed { max-width: 1120px; margin: 64px auto 0; display: grid; gap: 40px; }
-.verhaal { display: grid; gap: 40px; }
-.rij { display: grid; gap: 24px; align-items: center; }
-.rij > * { min-width: 0; }
-@media (min-width: 880px) {
-  .breed { margin-top: 96px; }
-  .rij { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 64px; }
-  .rij:nth-of-type(2) .beeld { order: -1; }
+.nu {
+  margin-top: 28px; background: var(--vel); border-radius: 14px; box-shadow: var(--schaduw);
+  padding: 18px; display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 18px; align-items: center;
 }
-.verhaal p { margin: 0 0 1em; max-width: 62ch; }
-.beeld { margin: 0; }
-.beeld canvas { display: block; width: 100%; max-width: 100%; border-radius: 4px; background: var(--plaat); }
-.beeld.podium canvas { aspect-ratio: 4 / 3; }
-.beeld img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 4px; }
-/* Platenhoes: de foto ligt voor de plaat, die er rechts half uit schuift */
-.hoes-binnen { position: relative; padding-right: 22%; }
-.hoes-binnen img { position: relative; z-index: 1; box-shadow: 0 10px 30px -12px #0008; border-radius: 2px; }
-.hoes-binnen canvas { position: absolute; right: 0; top: 50%; width: 62%; aspect-ratio: 1 / 1; transform: translateY(-50%); background: transparent; border-radius: 50%; transition: right .6s cubic-bezier(.2,.8,.2,1); }
-.hoes:hover .hoes-binnen canvas, .hoes.speelt .hoes-binnen canvas { right: -4%; }
-.credit { font: 400 0.72rem var(--f-mono); color: var(--gedempt); letter-spacing: 0.04em; margin-left: 8px; display: inline-block; transform: rotate(1deg); }
-.beeld figcaption { font: 500 1.3rem/1.15 var(--f-hand); color: var(--bic); margin-top: 8px; transform: rotate(-1deg); transform-origin: left; }
-.verhaal p:first-of-type::first-line { font-weight: 600; }
-.notitie {
-  font: 500 1.5rem/1.2 var(--f-hand); color: var(--bic);
-  margin: 8px 0 0; max-width: 28ch; transform: rotate(-1deg);
+.nu-plaat { position: relative; aspect-ratio: 1; width: 100%; }
+.nu-plaat canvas { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.draait { animation: draai 1.8s linear infinite; }  /* 33⅓ toeren per minuut */
+@keyframes draai { to { transform: rotate(360deg); } }
+.nu-info { min-width: 0; display: grid; gap: 4px; }
+.nu-titel { font-family: var(--f-kop); font-size: 1.35rem; line-height: 1.2; }
+.nu-meta { color: var(--potlood); font-size: .9rem; }
+.nu-knoppen { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.groot-speel {
+  width: 52px; height: 52px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--bic); color: var(--vel); display: grid; place-items: center; flex: none;
 }
+.groot-speel svg { width: 20px; height: 20px; }
+.tekst-knop {
+  height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid var(--lijn); background: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; font-size: .88rem; color: var(--inkt);
+}
+.tekst-knop svg { width: 16px; height: 16px; }
+.voortgang { margin-top: 12px; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 10px; align-items: center; font: 400 .75rem var(--f-mono); color: var(--potlood); font-variant-numeric: tabular-nums; }
+.spoor { height: 24px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.spoor-lijn { height: 3px; width: 100%; background: var(--lijn); border-radius: 2px; overflow: hidden; }
+.spoor-vul { height: 100%; width: 0; background: var(--bic); }
 
-/* Feiten */
-.feiten { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; border-top: 1px solid var(--inkt); margin: 0; }
-.feit { padding: 14px 16px 16px 0; border-bottom: 1px solid var(--lijn); }
-.feit dt { font: 500 0.72rem/1.3 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gedempt); }
-.feit dd { margin: 4px 0 0; font-size: 0.98rem; line-height: 1.45; }
+.sectie-kop { display: flex; align-items: baseline; justify-content: space-between; margin: 36px 0 6px; gap: 12px; }
+.lijst { list-style: none; margin: 0; padding: 0; }
+.nummer {
+  display: grid; grid-template-columns: 28px minmax(0, 1fr) auto 44px; gap: 8px; align-items: center;
+  min-height: 64px; border-bottom: 1px solid var(--lijn); cursor: pointer;
+}
+.nummer .nr { font: 400 .8rem var(--f-mono); color: var(--potlood); text-align: center; }
+.nummer.actief .nr { color: var(--bic); }
+.nummer .titel { font-weight: 600; line-height: 1.3; }
+.nummer.actief .titel { color: var(--bic); }
+.nummer .meta { font-size: .85rem; color: var(--potlood); line-height: 1.35; }
+.nummer .duur { font: 400 .8rem var(--f-mono); color: var(--potlood); font-variant-numeric: tabular-nums; }
+.demo { font: 500 .62rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; border: 1px solid currentColor; border-radius: 3px; padding: 3px 4px 2px; margin-left: 6px; vertical-align: 2px; color: var(--potlood); }
+.ikoon-knop { width: 44px; height: 44px; border: 0; background: none; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--potlood); }
+.ikoon-knop svg { width: 18px; height: 18px; }
+.ikoon-knop:hover { background: var(--bic-zacht); color: var(--bic); }
 
-footer { color: var(--gedempt); font-size: 0.85rem; border-top: 1px solid var(--lijn); padding-top: 16px; }
+/* ---------- Verhaal: een bladzijde uit het songschrift ---------- */
+.blad {
+  background: var(--vel); border-radius: 6px; box-shadow: var(--schaduw);
+  padding: 28px 22px 32px 46px; position: relative; margin-top: 20px;
+  background-image: linear-gradient(to right, transparent 30px, var(--kantlijn) 30px, var(--kantlijn) 31.5px, transparent 31.5px);
+}
+.blad > * + * { margin-top: 18px; }
+.blad p { max-width: 62ch; }
+.blad h2 { margin-top: 34px; }
+.notitie { font-family: var(--f-hand); color: var(--bic); font-size: 1.2rem; line-height: 1.3; transform: rotate(-1deg); }
+.geplakt { margin: 26px 0 8px; position: relative; }
+.geplakt img { height: auto; }
+.geplakt img, .geplakt canvas { width: 100%; border-radius: 3px; box-shadow: var(--schaduw); }
+.geplakt.links { transform: rotate(-1.2deg); }
+.geplakt.rechts { transform: rotate(1deg); }
+.geplakt::before {  /* plakbandje */
+  content: ""; position: absolute; top: -10px; left: 50%; width: 88px; height: 22px; z-index: 1;
+  transform: translateX(-50%) rotate(-3deg); background: var(--stift); opacity: .55; border-radius: 2px;
+}
+.geplakt figcaption { font-family: var(--f-hand); color: var(--bic); font-size: 1.05rem; margin-top: 8px; }
+.geplakt figcaption .credit { font: 400 .7rem var(--f-mono); color: var(--potlood); margin-left: 6px; }
+.podium { aspect-ratio: 4 / 3; display: block; background: var(--plaat); }
+.feiten { margin: 0; display: grid; gap: 0; }
+.feit { display: grid; grid-template-columns: 110px minmax(0,1fr); gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--lijn); }
+.feit dt { padding-top: 3px; }
+.feit dd { margin: 0; font-size: .98rem; line-height: 1.5; }
 
-/* Mini-speler onderaan, binnen duimbereik */
+/* ---------- Foto's ---------- */
+.raster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.raster .breed { grid-column: 1 / -1; }
+.foto-knop { border: 0; padding: 0; background: none; cursor: zoom-in; display: block; width: 100%; text-align: left; }
+.foto-knop img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+.foto-knop.breed img { aspect-ratio: 3 / 2; }
+.foto-knop span { display: block; font-family: var(--f-hand); color: var(--bic); font-size: 1rem; margin-top: 4px; }
+.platen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; margin-top: 16px; }
+@media (min-width: 560px) { .platen { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.plaat-knop { border: 0; background: none; padding: 0; cursor: pointer; text-align: center; }
+.plaat-knop canvas { width: 100%; aspect-ratio: 1; border-radius: 50%; display: block; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.plaat-knop:hover canvas { transform: rotate(25deg); }
+.plaat-knop span { display: block; font-size: .85rem; font-weight: 600; margin-top: 8px; line-height: 1.25; }
+.uitleg { color: var(--potlood); font-size: .92rem; margin-top: 4px; max-width: 52ch; }
+
+/* ---------- Mini-speler (boven de tabbalk, op andere tabbladen) ---------- */
 .mini {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-  background: var(--inkt); color: var(--papier);
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-  transform: translateY(110%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  position: fixed; left: 50%; bottom: calc(var(--tabhoogte) + env(safe-area-inset-bottom, 0px) + 10px);
+  width: min(680px, calc(100% - 24px)); transform: translate(-50%, 140%); z-index: 4;
+  background: var(--inkt); color: var(--papier); border-radius: 14px; padding: 8px 8px 8px 8px;
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 10px; align-items: center;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1); box-shadow: 0 10px 30px -10px #0007;
 }
-.mini.aan { transform: translateY(0); }
-.mini-binnen { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 44px minmax(0,1fr) auto; gap: 12px; align-items: center; }
-.mini button {
-  width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--papier); color: var(--inkt);
-  display: grid; place-items: center; cursor: pointer; padding: 0;
-}
+.mini.aan { transform: translate(-50%, 0); }
+.mini canvas { width: 44px; height: 44px; border-radius: 50%; }
+.mini-tekst { min-width: 0; cursor: pointer; }
+.mini-titel { font-weight: 600; font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-meta { font-size: .78rem; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--papier); color: var(--inkt); display: grid; place-items: center; cursor: pointer; }
 .mini button svg { width: 16px; height: 16px; }
-.mini-titel { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.balk { height: 20px; display: flex; align-items: center; cursor: pointer; }
-.balk-spoor { height: 3px; width: 100%; background: color-mix(in srgb, var(--papier) 25%, transparent); border-radius: 2px; overflow: hidden; }
-.balk-vul { height: 100%; width: 0%; background: var(--papier); }
-.mini-tijd { font: 400 0.8rem var(--f-mono); font-variant-numeric: tabular-nums; opacity: .75; }
+
+/* ---------- Bladen over het scherm: songtekst en foto groot ---------- */
+.laag { position: fixed; inset: 0; z-index: 20; background: #0008; display: grid; align-items: end; opacity: 0; transition: opacity .25s; }
+.laag.open { opacity: 1; }
+.vel-onder {
+  background: var(--vel); border-radius: 18px 18px 0 0; max-height: 86%; overflow-y: auto;
+  width: min(720px, 100%); margin: 0 auto; padding: 10px 24px calc(28px + env(safe-area-inset-bottom, 0px));
+  transform: translateY(30px); transition: transform .3s cubic-bezier(.2,.8,.2,1);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--lijn) 31px 32px);
+  background-position: 0 100px;
+}
+.laag.open .vel-onder { transform: none; }
+.greep { width: 40px; height: 4px; border-radius: 2px; background: var(--lijn); margin: 4px auto 14px; }
+.vel-kop { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.songtekst { white-space: pre-line; font-size: 1.1rem; line-height: 32px; margin-top: 18px; }
+.leeg { font-family: var(--f-hand); color: var(--bic); font-size: 1.3rem; line-height: 32px; margin-top: 18px; }
+.foto-laag { background: #000e; align-items: center; justify-items: center; padding: 16px; }
+.foto-laag figure { margin: 0; max-width: 100%; display: grid; gap: 10px; justify-items: center; }
+.foto-laag img { max-height: 78vh; width: auto; border-radius: 6px; }
+.foto-laag figcaption { color: #eee; font-family: var(--f-hand); font-size: 1.15rem; text-align: center; }
+.foto-laag .ikoon-knop { color: #fff; position: fixed; }
+.sluit { top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; }
+.vorige { left: 8px; top: 50%; }
+.volgende { right: 8px; top: 50%; }
 
 @media (prefers-reduced-motion: reduce) {
-  .mini, .track, .hoes-binnen canvas { transition: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 </style>
-
 </head>
 <body>
-<div class="pagina">
-  <figure class="foto">
-    <img src="img/david-portret.jpg" alt="David Janssen met akoestische gitaar naast een microfoon" width="1400" height="1450">
-    <figcaption>thuis, tussen twee songs in</figcaption>
-  </figure>
+<div class="app">
+  <div class="scroller" id="scroller">
 
-  <main class="inhoud">
-    <header class="kop">
-      <p class="rollen">Songwriter · muzikant · creatieveling</p>
-      <h1>David Janssen</h1>
-      <p class="motto">Ik hou van <em>goeie melodieën</em>, <em>eerlijke teksten</em> en songs die blijven hangen.</p>
-    </header>
+    <!-- LUISTER -->
+    <section class="scherm" id="scherm-luister" role="tabpanel" aria-labelledby="tab-luister">
+      <header class="kop">
+        <img src="img/david-portret.jpg" alt="Portret van David Janssen">
+        <div>
+          <p class="label">Songwriter · muzikant · creatieveling</p>
+          <h1>David Janssen</h1>
+        </div>
+      </header>
+      <p class="motto hand">Ik hou van goeie melodieën, eerlijke teksten en <span class="stift">songs die blijven hangen</span>.</p>
 
-    <section aria-labelledby="luister">
-      <h2 id="luister">Luister</h2>
-      <p class="sub">Van Palomine tot de eerste Nederlandstalige demo's.</p>
-      <ol class="tracks" id="tracks"></ol>
+      <div class="nu" aria-label="Nu aan het spelen">
+        <div class="nu-plaat"><canvas id="nu-plaat" role="img" aria-label="Plaat getekend uit het nummer"></canvas></div>
+        <div class="nu-info">
+          <p class="label" id="nu-label">Klaar om te spelen</p>
+          <p class="nu-titel" id="nu-titel">–</p>
+          <p class="nu-meta" id="nu-meta"></p>
+          <div class="nu-knoppen">
+            <button class="groot-speel" id="groot-speel" aria-label="Speel"></button>
+            <button class="tekst-knop" id="nu-tekst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 4h14M5 9h14M5 14h9M5 19h6"/></svg>Songtekst</button>
+          </div>
+        </div>
+        <div class="voortgang" style="grid-column: 1 / -1">
+          <span id="tijd-nu">0:00</span>
+          <div class="spoor" id="spoor" role="slider" tabindex="0" aria-label="Positie in het nummer" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="spoor-lijn"><div class="spoor-vul" id="spoor-vul"></div></div></div>
+          <span id="tijd-tot">0:00</span>
+        </div>
+      </div>
+
+      <div class="sectie-kop"><h2>Nummers</h2><span class="label">4 songs</span></div>
+      <ol class="lijst" id="lijst"></ol>
     </section>
 
-  </main>
-</div>
-
-<div class="breed">
-  <section class="verhaal" aria-labelledby="over">
-    <h2 id="over">Over mij</h2>
-    <div class="rij">
-      <div class="tekst">
+    <!-- VERHAAL -->
+    <section class="scherm" id="scherm-verhaal" role="tabpanel" aria-labelledby="tab-verhaal" hidden>
+      <p class="label">Over mij</p>
+      <h1>Het verhaal</h1>
+      <article class="blad">
         <p>Ik ben David, songwriter en muzikant. Mijn muzikale achtergrond is breed: van bandmuziek en albums tot musicals, songwriting voor andere artiesten en mijn eigen Nederlandstalige songs.</p>
+
+        <figure class="geplakt links">
+          <img src="img/palomine.jpg" alt="De vijf leden van Palomine rond oude radiozenders, de zanger roept in een microfoon" width="898" height="598" loading="lazy">
+          <figcaption>Palomine <span class="credit">foto: Alex Vanhee</span></figcaption>
+        </figure>
         <p>Met Palomine nam ik twee albums op en tourde ik in Groot-Brittannië en Nederland. Verschillende nummers kregen airplay op Vlaamse radiozenders.</p>
-      </div>
-      <figure class="beeld hoes">
-        <div class="hoes-binnen">
-          <canvas id="vinyl" role="img" aria-label="Een vinylplaat van Palomine, getekend uit de luidheid van Brand New Start en You'll Be Mine"></canvas>
-          <img src="img/palomine.jpg" alt="De vijf leden van Palomine rond oude radiozenders, de zanger roept in een microfoon" width="898" height="598">
-        </div>
-        <figcaption>Palomine <span class="credit">foto: Alex Vanhee</span></figcaption>
-      </figure>
-    </div>
-    <div class="rij">
-      <div class="tekst">
+
+        <figure class="geplakt rechts">
+          <canvas class="podium" id="podium" role="img" aria-label="Een musicalpodium met lampjes, getekend uit de muziek van de schoolmusical"></canvas>
+          <figcaption>The Greatest Showman, schoolmusical: getekend uit de muziek</figcaption>
+        </figure>
         <p>Naast mijn eigen muziek werk ik al meer dan 15 jaar als leerkracht Muzische Vorming in het lager onderwijs. Ik begeleid kinderen van 5 tot 12 jaar in muziek en theater en stond mee aan de basis van verschillende grote schoolmusicals, waaronder The Greatest Showman, Alice in Wonderland, The Lion King en Sjakie en de Chocoladefabriek. Samen met mijn vrouw zet ik dit werk verder binnen Studiotomaatgarnaal.</p>
-      </div>
-      <figure class="beeld podium">
-        <canvas id="podium" role="img" aria-label="Een musicalpodium met lampjes, getekend uit de luidheid van Dit ben ik uit The Greatest Showman"></canvas>
-        <figcaption>The Greatest Showman, schoolmusical: getekend uit de muziek</figcaption>
-      </figure>
-    </div>
-    <div class="rij">
-      <div class="tekst">
+
         <p>De laatste jaren ligt mijn focus steeds meer op songwriting. Ik schrijf graag samen met andere muzikanten en artiesten en ben geboeid door het hele proces: van een eerste idee tot een song die klopt. Recent schreef ik tijdens een writing session met Jeremie Vrielinck een nummer voor Willy Sommers.</p>
+
+        <figure class="geplakt links">
+          <img src="img/david-zon.jpg" alt="David speelt akoestische gitaar in de avondzon" width="1000" height="1000" loading="lazy">
+          <figcaption>aan het eerste soloalbum</figcaption>
+        </figure>
         <p>Momenteel werk ik aan mijn eerste soloalbum in het Nederlands. Daarin probeer ik vooral mijn eigen stem als songwriter verder te vinden.</p>
-        <p class="notitie">nu bezig: eerste soloalbum, in het Nederlands</p>
-      </div>
-      <figure class="beeld">
-        <img src="img/david-zon.jpg" alt="David speelt akoestische gitaar in de avondzon" width="1000" height="1000">
-        <figcaption>aan het eerste soloalbum</figcaption>
-      </figure>
+        <p class="notitie">Ik hou van goeie melodieën, eerlijke teksten en songs die blijven hangen.</p>
 
+        <h2>In het kort</h2>
+        <dl class="feiten">
+          <div class="feit"><dt class="label">Band</dt><dd>Palomine: twee albums, tours in Groot-Brittannië en Nederland, airplay op Vlaamse radio</dd></div>
+          <div class="feit"><dt class="label">Songwriting</dt><dd>Co-write met Jeremie Vrielinck voor Willy Sommers</dd></div>
+          <div class="feit"><dt class="label">Musicals</dt><dd>The Greatest Showman, Alice in Wonderland, The Lion King, Sjakie en de Chocoladefabriek</dd></div>
+          <div class="feit"><dt class="label">Onderwijs</dt><dd>15+ jaar leerkracht Muzische Vorming, kinderen van 5 tot 12</dd></div>
+          <div class="feit"><dt class="label">Studio</dt><dd>Studiotomaatgarnaal, samen met mijn vrouw</dd></div>
+          <div class="feit"><dt class="label">Nu</dt><dd>Eerste Nederlandstalige soloalbum</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <!-- FOTO'S -->
+    <section class="scherm" id="scherm-fotos" role="tabpanel" aria-labelledby="tab-fotos" hidden>
+      <p class="label">Galerij</p>
+      <h1>Foto's</h1>
+      <div class="raster" id="raster"></div>
+
+      <div class="sectie-kop"><h2>Getekend uit de muziek</h2></div>
+      <p class="uitleg">Elke plaat is getekend uit de luidheid van een nummer: hoe luider de muziek op dat moment, hoe langer het streepje. Tik op een plaat om het nummer te spelen.</p>
+      <div class="platen" id="platen"></div>
+    </section>
+
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="Schermen">
+    <div class="tabs-binnen">
+      <button class="tab" role="tab" id="tab-luister" aria-controls="scherm-luister" data-tab="luister">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+        <span>Luister</span>
+      </button>
+      <button class="tab" role="tab" id="tab-verhaal" aria-controls="scherm-verhaal" data-tab="verhaal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h11a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h11M8 8h6"/></svg>
+        <span>Verhaal</span>
+      </button>
+      <button class="tab" role="tab" id="tab-fotos" aria-controls="scherm-fotos" data-tab="fotos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+        <span>Foto's</span>
+      </button>
     </div>
-  </section>
-
-  <section class="kort" aria-labelledby="kort">
-    <h2 id="kort">In het kort</h2>
-    <dl class="feiten">
-      <div class="feit"><dt>Band</dt><dd>Palomine: twee albums, tours in Groot-Brittannië en Nederland, airplay op Vlaamse radio</dd></div>
-      <div class="feit"><dt>Songwriting</dt><dd>Co-write met Jeremie Vrielinck voor Willy Sommers</dd></div>
-      <div class="feit"><dt>Musicals</dt><dd>The Greatest Showman, Alice in Wonderland, The Lion King, Sjakie en de Chocoladefabriek</dd></div>
-      <div class="feit"><dt>Onderwijs</dt><dd>15+ jaar leerkracht Muzische Vorming, kinderen van 5 tot 12</dd></div>
-      <div class="feit"><dt>Studio</dt><dd>Studiotomaatgarnaal, samen met mijn vrouw</dd></div>
-      <div class="feit"><dt>Nu</dt><dd>Eerste Nederlandstalige soloalbum</dd></div>
-    </dl>
-  </section>
-
-  <footer>© David Janssen</footer>
+  </nav>
 </div>
 
 <div class="mini" id="mini" aria-live="polite">
-  <div class="mini-binnen">
-    <button id="miniKnop" aria-label="Pauzeer"></button>
-    <div style="min-width:0">
-      <div class="mini-titel" id="miniTitel">–</div>
-      <div class="balk" id="balk" role="slider" tabindex="0" aria-label="Positie in nummer" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <div class="balk-spoor"><div class="balk-vul" id="vul"></div></div>
-      </div>
-    </div>
-    <span class="mini-tijd" id="tijd">0:00</span>
+  <canvas id="mini-plaat" aria-hidden="true"></canvas>
+  <div class="mini-tekst" id="mini-tekst" role="button" tabindex="0" aria-label="Open de speler">
+    <div class="mini-titel" id="mini-titel"></div>
+    <div class="mini-meta" id="mini-meta"></div>
   </div>
+  <button id="mini-knop" aria-label="Speel"></button>
+</div>
+
+<div class="laag" id="tekst-laag" hidden>
+  <div class="vel-onder" role="dialog" aria-modal="true" aria-labelledby="tekst-titel">
+    <div class="greep"></div>
+    <div class="vel-kop">
+      <div><p class="label" id="tekst-meta"></p><h2 id="tekst-titel"></h2></div>
+      <button class="ikoon-knop" id="tekst-sluit" aria-label="Sluit songtekst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div id="tekst-inhoud"></div>
+  </div>
+</div>
+
+<div class="laag foto-laag" id="foto-laag" hidden role="dialog" aria-modal="true" aria-label="Foto groot">
+  <button class="ikoon-knop sluit" id="foto-sluit" aria-label="Sluit foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="ikoon-knop vorige" id="foto-vorige" aria-label="Vorige foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+  <figure><img id="foto-groot" alt=""><figcaption id="foto-onderschrift"></figcaption></figure>
+  <button class="ikoon-knop volgende" id="foto-volgende" aria-label="Volgende foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 </div>
 
 <audio id="audio" preload="none"></audio>
 
 <script>
+/* ---------- Inhoud ---------- */
 const NUMMERS = [
-  { titel: "Als jij me raakt", meta: "Gewoon David · solo", label: "demo", bestand: "audio/als-jij-me-raakt.mp3", duur: 206 },
-  { titel: "Ik vier het feest", meta: "Voor Willy Sommers · met Jeremie Vrielinck", label: "demo", bestand: "audio/ik-vier-het-feest.mp3", duur: 128 },
-  { titel: "Brand New Start", meta: "Palomine", label: "", bestand: "audio/brand-new-start.mp4", duur: 167 },
-  { titel: "You'll Be Mine", meta: "Palomine", label: "", bestand: "audio/youll-be-mine.mp4", duur: 187 },
+  { id: "als-jij-me-raakt", titel: "Als jij me raakt", meta: "Gewoon David · solo", demo: true, bestand: "audio/als-jij-me-raakt.mp3", duur: 206 },
+  { id: "ik-vier-het-feest", titel: "Ik vier het feest", meta: "Voor Willy Sommers · met Jeremie Vrielinck", demo: true, bestand: "audio/ik-vier-het-feest.mp3", duur: 128 },
+  { id: "brand-new-start", titel: "Brand New Start", meta: "Palomine", bestand: "audio/brand-new-start.mp4", duur: 167 },
+  { id: "youll-be-mine", titel: "You'll Be Mine", meta: "Palomine", bestand: "audio/youll-be-mine.mp4", duur: 187 },
 ];
-const PLAY = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>';
-const PAUZE = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11"/><rect x="9.5" y="2.5" width="3" height="11"/></svg>';
+/* Songteksten: zet de tekst tussen de backticks. Leeg = "tekst volgt". */
+const TEKSTEN = {
+  "als-jij-me-raakt": ``,
+  "ik-vier-het-feest": ``,
+  "brand-new-start": ``,
+  "youll-be-mine": ``,
+};
+const FOTOS = [
+  { src: "img/david-zon.jpg", tekst: "Aan het eerste soloalbum", alt: "David speelt akoestische gitaar in de avondzon" },
+  { src: "img/david-portret.jpg", tekst: "Thuis, tussen twee songs in", alt: "David met akoestische gitaar naast een microfoon" },
+  { src: "img/palomine.jpg", tekst: "Palomine · foto: Alex Vanhee", alt: "De vijf leden van Palomine rond oude radiozenders", breed: true },
+];
+/* Luidheid per nummer (0–1), gemeten uit de audiobestanden */
+const GOLVEN = {"brand-new-start":[0.01,0.04,0.07,0.09,0.12,0.18,0.34,0.9,0.91,0.85,0.8,0.83,0.82,0.88,0.87,0.78,0.75,0.7,0.75,0.68,0.77,0.85,0.87,0.57,0.84,0.69,0.82,0.63,0.87,0.75,0.76,0.69,0.81,0.73,0.81,0.71,0.79,0.83,0.66,0.79,0.72,0.85,0.68,0.87,0.81,0.78,0.63,0.83,0.69,0.83,0.65,0.89,0.99,0.86,0.91,0.91,0.85,0.92,0.92,0.93,0.83,0.91,0.87,0.96,0.87,0.85,0.85,0.97,0.93,0.6,0.8,0.59,0.79,0.64,0.84,0.79,0.77,0.71,0.75,0.71,0.73,0.72,0.86,0.84,0.67,0.76,0.71,0.85,0.63,0.81,0.89,0.81,0.68,0.92,0.63,0.84,0.61,0.87,0.95,0.82,0.75,0.79,0.8,0.76,0.73,0.85,0.83,0.68,0.82,0.77,0.85,0.72,0.9,0.96,0.96,0.91,0.89,0.88,0.81,0.95,0.9,0.91,0.83,0.92,0.87,0.9,0.89,0.8,0.91,0.98,0.85,0.86,0.94,0.92,0.98,0.92,0.94,0.81,0.94,0.9,0.92,0.83,0.85,0.9,0.96,0.83,0.7,0.72,0.69,0.72,0.73,0.79,0.75,0.69,0.78,0.69,0.82,0.69,0.81,0.84,0.86,0.66,0.86,0.71,0.82,0.75,0.8,0.82,0.82,0.8,0.76,0.75,0.74,0.78,0.86,1.0,0.64,0.64,0.68,0.61,0.67,0.75,0.71,0.72,0.75,0.69,0.75,0.71,0.75,0.75,0.72,0.65,0.61,0.78,0.75,0.77,0.77,0.95,0.74,0.83,0.76,0.81,0.79,0.76,0.76,0.72,0.63,0.15,0.15,0.17,0.85,0.9,0.89,0.87,0.86,0.85,0.91,0.91,0.81,0.82,0.77,0.77,0.72,0.8,0.86,0.94,0.73,0.67,0.63,0.63,0.59,0.5,0.48,0.41,0.3,0.21,0.11,0.05,0.02,0.0],"youll-be-mine":[0.67,0.77,0.54,0.7,0.51,0.76,0.64,0.64,0.78,0.46,0.76,0.49,0.7,0.66,0.62,0.82,0.5,0.72,0.71,0.63,0.64,0.52,0.85,0.51,0.78,0.6,0.75,0.76,0.49,0.7,0.51,0.73,0.63,0.7,0.79,0.54,0.66,0.68,0.64,0.63,0.67,0.79,0.64,0.78,0.56,0.79,0.55,0.65,0.69,0.59,0.75,0.59,0.82,0.7,0.64,0.81,0.78,0.87,0.88,0.91,0.87,0.83,0.8,0.84,0.81,0.87,0.85,0.86,0.85,0.87,0.85,0.86,0.88,0.91,0.82,0.83,0.76,0.48,0.76,0.6,0.7,0.75,0.58,0.75,0.53,0.77,0.57,0.63,0.8,0.55,0.78,0.51,0.7,0.65,0.66,0.71,0.64,0.79,0.63,0.78,0.7,0.66,0.77,0.47,0.73,0.73,0.73,0.72,0.69,0.81,0.61,0.77,0.73,0.87,0.8,0.9,0.85,0.86,0.83,0.79,0.85,0.79,0.83,0.9,0.86,0.87,0.89,0.84,0.86,0.95,0.93,0.86,0.88,0.8,0.88,0.91,0.84,0.82,0.78,0.86,0.84,0.85,0.9,0.9,0.81,0.89,0.82,0.87,0.94,0.88,0.96,0.84,0.46,0.29,0.27,0.27,0.3,0.31,0.29,0.28,0.31,0.73,0.67,0.68,0.66,0.75,0.68,0.74,0.73,0.67,0.76,0.76,0.78,0.74,0.79,0.79,0.77,0.79,0.78,0.92,0.55,0.53,0.93,0.84,0.84,0.79,0.85,0.82,0.88,0.86,0.88,0.85,0.91,0.89,0.89,1.0,0.9,0.9,0.86,0.8,0.88,0.86,0.83,0.76,0.82,0.84,0.91,0.88,0.89,0.86,0.88,0.87,0.86,0.85,0.97,0.88,0.88,0.87,0.48,0.71,0.62,0.58,0.81,0.49,0.71,0.52,0.76,0.72,0.57,0.76,0.55,0.76,0.6,0.72,0.73,0.7,0.38,0.0,0.0,0.0],"dit-ben-ik":[0.16,0.19,0.24,0.1,0.39,0.36,0.28,0.11,0.33,0.26,0.24,0.19,0.4,0.26,0.29,0.16,0.32,0.4,0.44,0.18,0.37,0.26,0.28,0.21,0.27,0.37,0.36,0.41,0.34,0.24,0.32,0.32,0.24,0.51,0.63,0.49,0.19,0.68,0.53,0.33,0.43,0.55,0.4,0.63,0.41,0.75,0.54,0.36,0.61,0.65,0.54,0.43,0.78,0.58,0.64,0.39,0.77,0.79,0.76,0.78,0.81,0.73,0.71,0.82,0.88,0.87,0.58,0.83,0.76,0.68,0.64,0.67,0.72,0.69,0.71,0.85,0.77,0.71,0.85,0.8,0.88,0.81,0.65,0.75,0.76,0.77,0.67,0.75,0.72,0.51,0.88,0.9,0.58,0.8,0.82,0.72,0.61,0.77,0.68,0.77,0.49,0.71,0.84,0.58,0.77,0.86,0.82,0.62,0.92,0.76,0.86,0.49,0.61,0.85,0.68,0.8,0.76,0.75,0.79,0.94,0.84,0.92,0.73,0.74,0.89,0.75,0.83,0.74,0.88,0.75,0.96,0.96,0.88,0.8,0.55,0.53,0.43,0.2,0.42,0.45,0.36,0.25,0.31,0.31,0.4,0.16,0.37,0.91,1.0,0.65,0.81,0.92,0.85,0.63,0.89,0.82,0.85,0.53,0.66,0.83,0.76,0.81,0.81,0.88,0.82,0.92,0.96,0.94,0.71,0.65,0.02,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"als-jij-me-raakt":[0.0,0.43,0.71,0.79,0.65,0.81,0.55,0.77,0.72,0.78,0.74,0.56,0.83,0.67,0.77,0.76,0.77,0.76,0.63,0.83,0.58,0.87,0.82,0.6,0.69,0.3,0.7,0.75,0.64,0.5,0.49,0.93,0.69,0.7,0.71,0.75,0.71,0.43,0.72,0.57,0.75,0.74,0.64,0.8,0.36,0.73,0.77,0.71,0.7,0.41,0.92,0.85,0.88,0.87,0.79,0.82,0.63,0.78,0.73,0.81,0.7,0.67,0.79,0.79,0.84,0.79,0.61,0.81,0.83,0.86,0.7,0.69,0.71,0.83,0.9,0.74,0.8,0.5,0.61,0.83,0.68,0.81,0.49,0.61,0.73,0.54,0.84,0.43,0.79,0.84,0.78,0.79,0.8,0.8,0.6,0.75,0.71,0.6,0.9,0.64,0.75,0.61,0.7,0.77,0.64,0.84,0.48,0.84,0.92,0.89,0.9,0.79,0.88,0.66,0.79,0.77,0.77,1.0,0.86,0.9,0.9,0.94,0.74,0.72,0.89,0.77,0.91,0.76,0.65,0.53,0.82,0.87,0.56,0.56,0.75,0.64,0.85,0.7,0.74,0.79,0.85,0.8,0.7,0.83,0.72,0.83,0.77,0.7,0.87,0.8,0.81,0.84,0.92,0.59,0.4,0.3,0.21,0.31,0.42,0.41,0.31,0.25,0.52,0.49,0.37,0.25,0.52,0.95,0.79,0.87,0.82,0.82,0.71,0.68,0.84,0.72,0.84,0.73,0.63,0.79,0.5,0.72,0.78,0.74,0.67,0.86,0.99,0.82,0.9,0.84,0.79,0.84,0.63,0.82,0.79,0.96,0.91,0.94,0.97,0.84,0.89,0.8,0.75,0.85,0.8,0.89,0.75,0.79,0.8,0.84,0.93,0.72,0.82,0.83,0.89,0.8,0.73,0.87,0.81,0.93,0.85,0.75,0.91,0.81,0.87,0.86,0.87,0.82,0.91,0.86,0.68,0.49,0.39,0.19,0.05,0.02,0.01,0.0,0.0,0.0],"ik-vier-het-feest":[0.0,0.23,0.48,0.33,0.54,0.47,0.46,0.53,0.58,0.68,0.33,0.21,0.13,0.5,0.64,0.29,0.55,0.44,0.7,0.33,0.59,0.42,0.58,0.55,0.46,0.54,0.46,0.7,0.46,0.25,0.46,0.58,0.69,0.63,0.7,0.66,0.69,0.3,0.19,0.32,0.62,0.6,0.62,0.62,0.52,0.62,0.37,0.26,0.33,0.56,0.81,0.28,0.52,0.64,0.63,0.45,0.53,0.44,0.62,0.63,0.61,0.62,0.73,0.74,0.46,0.57,0.53,0.62,0.69,0.59,0.61,0.57,0.56,0.56,0.25,0.49,0.56,0.49,0.53,0.57,0.67,0.48,0.5,0.75,0.62,0.54,0.66,0.59,0.61,0.73,0.71,0.45,0.67,0.69,0.58,0.62,0.61,0.34,0.81,0.69,0.81,0.81,0.74,0.78,0.75,0.8,0.64,0.48,0.76,0.5,0.68,0.64,0.6,0.73,0.56,0.43,0.35,0.41,0.68,0.79,0.85,0.75,0.66,0.76,0.71,0.68,0.74,0.69,0.77,0.65,0.69,0.61,0.67,0.82,0.84,0.77,0.82,0.76,0.65,0.81,0.69,0.77,0.75,0.77,0.79,0.69,0.8,0.75,0.84,0.81,0.69,0.82,0.74,0.86,0.77,0.81,0.76,0.72,0.81,0.78,0.8,0.92,0.8,0.88,0.73,0.69,0.79,0.75,0.84,0.8,0.75,0.71,0.78,0.82,0.88,0.84,0.85,0.87,0.79,0.92,0.92,0.9,0.9,0.82,0.85,0.93,0.7,0.82,0.74,0.81,0.73,0.75,0.75,0.56,0.9,0.82,0.93,0.98,0.89,0.95,0.82,0.89,0.81,0.66,1.0,0.71,0.69,0.81,0.72,0.85,0.96,0.88,0.73,0.78,0.91,0.89,0.84,0.88,0.75,0.67,0.68,0.89,0.91,0.88,0.99,0.95,0.91,0.76,0.86,0.8,0.81,0.73,0.74,0.85,0.62,0.59,0.61,0.1,0.0,0.0]};
+
+/* ---------- Hulpjes ---------- */
+const $ = id => document.getElementById(id);
 const tijd = s => { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
-
-const lijst = document.getElementById("tracks");
-const audio = document.getElementById("audio");
-const mini = document.getElementById("mini");
-const miniKnop = document.getElementById("miniKnop");
-let huidig = -1;
-
-NUMMERS.forEach((n, i) => {
-  const li = document.createElement("li");
-  li.className = "track";
-  li.innerHTML = `
-    <button class="speel" aria-label="Speel ${n.titel}">${PLAY}</button>
-    <div style="min-width:0">
-      <div class="titel">${n.titel}${n.label ? `<span class="label">${n.label}</span>` : ""}</div>
-      <div class="meta">${n.meta}</div>
-    </div>
-    <span class="duur">${tijd(n.duur)}</span>`;
-  li.addEventListener("click", () => kies(i));
-  lijst.appendChild(li);
-});
-
-function laad(i) {
-  audio.src = NUMMERS[i].bestand;
-  audio.play().catch(() => {});
-}
-function kies(i) {
-  if (i === huidig) { audio.paused ? audio.play() : audio.pause(); return; }
-  huidig = i;
-  laad(i);
-  document.getElementById("miniTitel").textContent = NUMMERS[i].titel + " — " + NUMMERS[i].meta;
-  mini.classList.add("aan");
-  teken();
-}
-function teken() {
-  [...lijst.children].forEach((li, i) => {
-    const actief = i === huidig && !audio.paused;
-    li.classList.toggle("speelt", i === huidig);
-    const b = li.querySelector(".speel");
-    b.innerHTML = actief ? PAUZE : PLAY;
-    b.setAttribute("aria-label", (actief ? "Pauzeer " : "Speel ") + NUMMERS[i].titel);
-  });
-  miniKnop.innerHTML = audio.paused ? PLAY : PAUZE;
-  miniKnop.setAttribute("aria-label", audio.paused ? "Speel verder" : "Pauzeer");
-}
-miniKnop.addEventListener("click", () => audio.paused ? audio.play() : audio.pause());
-audio.addEventListener("play", teken);
-audio.addEventListener("pause", teken);
-audio.addEventListener("ended", () => { if (huidig < NUMMERS.length - 1) kies(huidig + 1); else teken(); });
-audio.addEventListener("timeupdate", () => {
-  const d = audio.duration || NUMMERS[huidig]?.duur || 1;
-  const p = (audio.currentTime / d) * 100;
-  document.getElementById("vul").style.width = p + "%";
-  document.getElementById("balk").setAttribute("aria-valuenow", Math.round(p));
-  document.getElementById("tijd").textContent = tijd(audio.currentTime) + " / " + tijd(d);
-});
-const balk = document.getElementById("balk");
-balk.addEventListener("click", e => {
-  const r = balk.getBoundingClientRect();
-  if (audio.duration) audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
-});
-balk.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight") audio.currentTime += 5;
-  if (e.key === "ArrowLeft") audio.currentTime -= 5;
-});
-
-/* Beelden getekend uit de muziek zelf: per nummer de luidheid (0–1) in stukjes */
-const GOLVEN = {"brand-new-start":[0.01,0.04,0.07,0.09,0.12,0.18,0.34,0.9,0.91,0.85,0.8,0.83,0.82,0.88,0.87,0.78,0.75,0.7,0.75,0.68,0.77,0.85,0.87,0.57,0.84,0.69,0.82,0.63,0.87,0.75,0.76,0.69,0.81,0.73,0.81,0.71,0.79,0.83,0.66,0.79,0.72,0.85,0.68,0.87,0.81,0.78,0.63,0.83,0.69,0.83,0.65,0.89,0.99,0.86,0.91,0.91,0.85,0.92,0.92,0.93,0.83,0.91,0.87,0.96,0.87,0.85,0.85,0.97,0.93,0.6,0.8,0.59,0.79,0.64,0.84,0.79,0.77,0.71,0.75,0.71,0.73,0.72,0.86,0.84,0.67,0.76,0.71,0.85,0.63,0.81,0.89,0.81,0.68,0.92,0.63,0.84,0.61,0.87,0.95,0.82,0.75,0.79,0.8,0.76,0.73,0.85,0.83,0.68,0.82,0.77,0.85,0.72,0.9,0.96,0.96,0.91,0.89,0.88,0.81,0.95,0.9,0.91,0.83,0.92,0.87,0.9,0.89,0.8,0.91,0.98,0.85,0.86,0.94,0.92,0.98,0.92,0.94,0.81,0.94,0.9,0.92,0.83,0.85,0.9,0.96,0.83,0.7,0.72,0.69,0.72,0.73,0.79,0.75,0.69,0.78,0.69,0.82,0.69,0.81,0.84,0.86,0.66,0.86,0.71,0.82,0.75,0.8,0.82,0.82,0.8,0.76,0.75,0.74,0.78,0.86,1.0,0.64,0.64,0.68,0.61,0.67,0.75,0.71,0.72,0.75,0.69,0.75,0.71,0.75,0.75,0.72,0.65,0.61,0.78,0.75,0.77,0.77,0.95,0.74,0.83,0.76,0.81,0.79,0.76,0.76,0.72,0.63,0.15,0.15,0.17,0.85,0.9,0.89,0.87,0.86,0.85,0.91,0.91,0.81,0.82,0.77,0.77,0.72,0.8,0.86,0.94,0.73,0.67,0.63,0.63,0.59,0.5,0.48,0.41,0.3,0.21,0.11,0.05,0.02,0.0],"dit-ben-ik":[0.16,0.19,0.24,0.1,0.39,0.36,0.28,0.11,0.33,0.26,0.24,0.19,0.4,0.26,0.29,0.16,0.32,0.4,0.44,0.18,0.37,0.26,0.28,0.21,0.27,0.37,0.36,0.41,0.34,0.24,0.32,0.32,0.24,0.51,0.63,0.49,0.19,0.68,0.53,0.33,0.43,0.55,0.4,0.63,0.41,0.75,0.54,0.36,0.61,0.65,0.54,0.43,0.78,0.58,0.64,0.39,0.77,0.79,0.76,0.78,0.81,0.73,0.71,0.82,0.88,0.87,0.58,0.83,0.76,0.68,0.64,0.67,0.72,0.69,0.71,0.85,0.77,0.71,0.85,0.8,0.88,0.81,0.65,0.75,0.76,0.77,0.67,0.75,0.72,0.51,0.88,0.9,0.58,0.8,0.82,0.72,0.61,0.77,0.68,0.77,0.49,0.71,0.84,0.58,0.77,0.86,0.82,0.62,0.92,0.76,0.86,0.49,0.61,0.85,0.68,0.8,0.76,0.75,0.79,0.94,0.84,0.92,0.73,0.74,0.89,0.75,0.83,0.74,0.88,0.75,0.96,0.96,0.88,0.8,0.55,0.53,0.43,0.2,0.42,0.45,0.36,0.25,0.31,0.31,0.4,0.16,0.37,0.91,1.0,0.65,0.81,0.92,0.85,0.63,0.89,0.82,0.85,0.53,0.66,0.83,0.76,0.81,0.81,0.88,0.82,0.92,0.96,0.94,0.71,0.65,0.02,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"youll-be-mine":[0.67,0.77,0.54,0.7,0.51,0.76,0.64,0.64,0.78,0.46,0.76,0.49,0.7,0.66,0.62,0.82,0.5,0.72,0.71,0.63,0.64,0.52,0.85,0.51,0.78,0.6,0.75,0.76,0.49,0.7,0.51,0.73,0.63,0.7,0.79,0.54,0.66,0.68,0.64,0.63,0.67,0.79,0.64,0.78,0.56,0.79,0.55,0.65,0.69,0.59,0.75,0.59,0.82,0.7,0.64,0.81,0.78,0.87,0.88,0.91,0.87,0.83,0.8,0.84,0.81,0.87,0.85,0.86,0.85,0.87,0.85,0.86,0.88,0.91,0.82,0.83,0.76,0.48,0.76,0.6,0.7,0.75,0.58,0.75,0.53,0.77,0.57,0.63,0.8,0.55,0.78,0.51,0.7,0.65,0.66,0.71,0.64,0.79,0.63,0.78,0.7,0.66,0.77,0.47,0.73,0.73,0.73,0.72,0.69,0.81,0.61,0.77,0.73,0.87,0.8,0.9,0.85,0.86,0.83,0.79,0.85,0.79,0.83,0.9,0.86,0.87,0.89,0.84,0.86,0.95,0.93,0.86,0.88,0.8,0.88,0.91,0.84,0.82,0.78,0.86,0.84,0.85,0.9,0.9,0.81,0.89,0.82,0.87,0.94,0.88,0.96,0.84,0.46,0.29,0.27,0.27,0.3,0.31,0.29,0.28,0.31,0.73,0.67,0.68,0.66,0.75,0.68,0.74,0.73,0.67,0.76,0.76,0.78,0.74,0.79,0.79,0.77,0.79,0.78,0.92,0.55,0.53,0.93,0.84,0.84,0.79,0.85,0.82,0.88,0.86,0.88,0.85,0.91,0.89,0.89,1.0,0.9,0.9,0.86,0.8,0.88,0.86,0.83,0.76,0.82,0.84,0.91,0.88,0.89,0.86,0.88,0.87,0.86,0.85,0.97,0.88,0.88,0.87,0.48,0.71,0.62,0.58,0.81,0.49,0.71,0.52,0.76,0.72,0.57,0.76,0.55,0.76,0.6,0.72,0.73,0.7,0.38,0.0,0.0,0.0]};
 const kleur = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-function doek(id) {
-  const c = document.getElementById(id), r = c.getBoundingClientRect(), d = devicePixelRatio || 1;
+const PLAY = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4.5 2.5v11l9-5.5z"/></svg>';
+const PAUZE = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11" rx=".5"/><rect x="9.5" y="2.5" width="3" height="11" rx=".5"/></svg>';
+const TEKST_IKOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 4h14M5 9h14M5 14h9M5 19h6"/></svg>';
+const audio = $("audio");
+let huidig = 0, gestart = false;
+
+/* ---------- Platen tekenen uit de muziek ---------- */
+function doek(c) {
+  const r = c.getBoundingClientRect(), d = devicePixelRatio || 1;
+  if (!r.width) return null;
   c.width = Math.round(r.width * d); c.height = Math.round(r.height * d);
   const x = c.getContext("2d"); x.setTransform(d, 0, 0, d, 0, 0);
   return [x, r.width, r.height];
 }
-function voortgang(bestand) {
-  if (huidig < 0 || NUMMERS[huidig].bestand !== bestand || !audio.duration) return -1;
-  return audio.currentTime / audio.duration;
-}
-function tekenVinyl() {
-  const [x, w] = doek("vinyl"), m = w / 2, R = w / 2 - 2;
-  const plaat = kleur("--plaat"), groef = kleur("--groef"), bic = kleur("--bic");
+function tekenPlaat(c, id, p = -1, label = true) {
+  const k = doek(c); if (!k) return;
+  const [x, w] = k, m = w / 2, R = w / 2, v = GOLVEN[id], n = v.length;
+  const groef = kleur("--groef"), bic = kleur("--bic");
   x.clearRect(0, 0, w, w);
-  x.fillStyle = plaat; x.beginPath(); x.arc(m, m, R, 0, 7); x.fill();
-  [["brand-new-start", "audio/brand-new-start.mp4", 0.95, 0.66], ["youll-be-mine", "audio/youll-be-mine.mp4", 0.63, 0.36]].forEach(([k, bestand, buiten, binnen]) => {
-    const v = GOLVEN[k], n = v.length, p = voortgang(bestand);
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2 - Math.PI / 2, r0 = R * binnen, r1 = r0 + (R * (buiten - binnen)) * (0.12 + 0.88 * v[i]);
-      x.strokeStyle = p >= 0 && i / n <= p ? bic : groef;
-      x.globalAlpha = p >= 0 && i / n <= p ? 1 : 0.35 + 0.5 * v[i];
-      x.lineWidth = Math.max(1, (R * 2 * Math.PI * binnen) / n * 0.55);
-      x.beginPath(); x.moveTo(m + Math.cos(a) * r0, m + Math.sin(a) * r0); x.lineTo(m + Math.cos(a) * r1, m + Math.sin(a) * r1); x.stroke();
-    }
-  });
-  x.globalAlpha = 1;
-  x.fillStyle = bic; x.beginPath(); x.arc(m, m, R * 0.3, 0, 7); x.fill();
-  x.fillStyle = plaat; x.beginPath(); x.arc(m, m, R * 0.025, 0, 7); x.fill();
-  x.fillStyle = kleur("--papier"); x.textAlign = "center";
-  x.font = `400 ${R * 0.085}px Gloock, Georgia, serif`; x.fillText("Palomine", m, m - R * 0.1);
-  x.font = `500 ${R * 0.034}px "JetBrains Mono", monospace`;
-  x.fillText("A · BRAND NEW START", m, m + R * 0.1); x.fillText("B · YOU'LL BE MINE", m, m + R * 0.16);
+  x.fillStyle = kleur("--plaat"); x.beginPath(); x.arc(m, m, R, 0, 7); x.fill();
+  const binnen = 0.4, buiten = 0.94;
+  x.lineCap = "round";
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2, aan = p >= 0 && i / n <= p;
+    const r0 = R * binnen, r1 = r0 + R * (buiten - binnen) * (0.1 + 0.9 * v[i]);
+    x.strokeStyle = aan ? bic : groef; x.globalAlpha = aan ? 1 : 0.3 + 0.55 * v[i];
+    x.lineWidth = Math.max(0.8, (Math.PI * 2 * r0) / n * 0.6);
+    x.beginPath(); x.moveTo(m + Math.cos(a) * r0, m + Math.sin(a) * r0); x.lineTo(m + Math.cos(a) * r1, m + Math.sin(a) * r1); x.stroke();
+  }
+  x.globalAlpha = 1; x.fillStyle = bic; x.beginPath(); x.arc(m, m, R * 0.34, 0, 7); x.fill();
+  x.fillStyle = kleur("--plaat"); x.beginPath(); x.arc(m, m, Math.max(1.5, R * 0.03), 0, 7); x.fill();
+  if (label && w > 90) {
+    x.fillStyle = kleur("--vel"); x.textAlign = "center";
+    x.font = `400 ${R * 0.075}px "JetBrains Mono", monospace`;
+    x.fillText("DAVID JANSSEN", m, m - R * 0.12);
+  }
 }
 function tekenPodium() {
-  const [x, w, h] = doek("podium"), v = GOLVEN["dit-ben-ik"], n = v.length, p = voortgang("audio/dit-ben-ik.mp3");
-  const groef = kleur("--groef"), bic = kleur("--bic");
+  const c = $("podium"), k = doek(c); if (!k) return;
+  const [x, w, h] = k, v = GOLVEN["dit-ben-ik"], n = v.length, groef = kleur("--groef"), bic = kleur("--bic");
   x.clearRect(0, 0, w, h);
-  // spotlicht
-  const g = x.createRadialGradient(w / 2, h * 0.18, 0, w / 2, h * 0.6, w * 0.6);
-  g.addColorStop(0, bic + "55"); g.addColorStop(1, bic + "00");
-  x.fillStyle = g; x.beginPath(); x.moveTo(w * 0.44, h * 0.16); x.lineTo(w * 0.56, h * 0.16); x.lineTo(w * 0.85, h * 0.78); x.lineTo(w * 0.15, h * 0.78); x.fill();
-  // boog met lampjes: elk lampje is een stuk van het nummer
-  const lampen = 34, cx = w / 2, cy = h * 0.78, rx = w * 0.44, ry = h * 0.66;
+  const g = x.createLinearGradient(0, h * 0.16, 0, h * 0.8);
+  g.addColorStop(0, bic + "66"); g.addColorStop(1, bic + "08");
+  x.fillStyle = g; x.beginPath(); x.moveTo(w * .44, h * .16); x.lineTo(w * .56, h * .16); x.lineTo(w * .85, h * .78); x.lineTo(w * .15, h * .78); x.fill();
+  const lampen = 34, cx = w / 2, cy = h * .78, rx = w * .44, ry = h * .66;
   for (let i = 0; i < lampen; i++) {
     const t = i / (lampen - 1), a = Math.PI + t * Math.PI, s = Math.floor(t * (n - 1));
-    const aan = p >= 0 && t <= p;
-    x.globalAlpha = aan ? 1 : 0.25 + 0.75 * v[s];
-    x.fillStyle = aan ? bic : groef;
-    x.beginPath(); x.arc(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, 2 + 3.5 * v[s] * (w / 500), 0, 7); x.fill();
+    x.globalAlpha = .25 + .75 * v[s]; x.fillStyle = groef;
+    x.beginPath(); x.arc(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, 1.6 + 3.2 * v[s] * (w / 500), 0, 7); x.fill();
   }
-  // podiumvloer: het hele nummer als golf
-  const vloer = h * 0.88, bw = (w * 0.9) / n;
-  for (let i = 0; i < n; i++) {
-    const hh = 2 + v[i] * h * 0.09, aan = p >= 0 && i / n <= p;
-    x.globalAlpha = aan ? 1 : 0.6; x.fillStyle = aan ? bic : groef;
-    x.fillRect(w * 0.05 + i * bw, vloer - hh / 2, Math.max(1, bw * 0.6), hh);
-  }
+  const vloer = h * .88, bw = (w * .9) / n;
+  for (let i = 0; i < n; i++) { const hh = 2 + v[i] * h * .09; x.globalAlpha = .6; x.fillStyle = groef; x.fillRect(w * .05 + i * bw, vloer - hh / 2, Math.max(1, bw * .6), hh); }
   x.globalAlpha = 1; x.fillStyle = groef; x.textAlign = "center";
-  x.font = `400 ${w * 0.062}px Gloock, Georgia, serif`; x.fillText("The Greatest Showman", w / 2, h * 0.5);
-  x.font = `500 ${w * 0.024}px "JetBrains Mono", monospace`; x.globalAlpha = 0.7;
-  x.fillText("SCHOOLMUSICAL", w / 2, h * 0.58); x.globalAlpha = 1;
+  x.font = `400 ${w * .065}px "Young Serif", Georgia, serif`; x.fillText("The Greatest Showman", w / 2, h * .5);
+  x.font = `500 ${w * .026}px "JetBrains Mono", monospace`; x.globalAlpha = .7; x.fillText("SCHOOLMUSICAL", w / 2, h * .58); x.globalAlpha = 1;
 }
-function tekenBeelden() {
-  try { tekenVinyl(); } catch (e) {}
-  try { tekenPodium(); } catch (e) {}
-  const pal = huidig >= 0 && NUMMERS[huidig].meta === "Palomine" && !audio.paused;
-  document.querySelector(".hoes")?.classList.toggle("speelt", pal);
+function voortgang() { return gestart && audio.duration ? audio.currentTime / audio.duration : -1; }
+function tekenAlles() {
+  const id = NUMMERS[huidig].id;
+  tekenPlaat($("nu-plaat"), id, voortgang());
+  tekenPlaat($("mini-plaat"), id, -1, false);
+  if (!$("scherm-verhaal").hidden) tekenPodium();
+  if (!$("scherm-fotos").hidden) document.querySelectorAll(".plaat-knop canvas").forEach(c => tekenPlaat(c, c.dataset.id));
 }
-tekenBeelden();
-document.fonts?.ready.then(tekenBeelden);
-addEventListener("resize", tekenBeelden);
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", tekenBeelden);
-new MutationObserver(tekenBeelden).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-audio.addEventListener("timeupdate", tekenBeelden);
-audio.addEventListener("pause", tekenBeelden);
 
-/* App: werkt ook als je even geen internet hebt (behalve de nummers) */
+/* ---------- Nummerlijst ---------- */
+const lijst = $("lijst");
+NUMMERS.forEach((n, i) => {
+  const li = document.createElement("li");
+  li.className = "nummer";
+  li.innerHTML = `
+    <span class="nr">${i + 1}</span>
+    <div style="min-width:0"><div class="titel">${n.titel}${n.demo ? '<span class="demo">demo</span>' : ""}</div><div class="meta">${n.meta}</div></div>
+    <span class="duur">${tijd(n.duur)}</span>
+    <button class="ikoon-knop" aria-label="Songtekst van ${n.titel}">${TEKST_IKOON}</button>`;
+  li.addEventListener("click", () => kies(i));
+  li.querySelector("button").addEventListener("click", e => { e.stopPropagation(); openTekst(i); });
+  lijst.appendChild(li);
+});
+
+/* ---------- Afspelen ---------- */
+function kies(i, start = true) {
+  if (i === huidig && gestart) { audio.paused ? audio.play() : audio.pause(); return; }
+  huidig = i;
+  if (start) { gestart = true; audio.src = NUMMERS[i].bestand; audio.play().catch(() => {}); }
+  toon();
+}
+function toon() {
+  const n = NUMMERS[huidig], speelt = gestart && !audio.paused;
+  $("nu-titel").textContent = n.titel;
+  $("nu-meta").textContent = n.meta;
+  $("nu-label").textContent = speelt ? "Nu aan het spelen" : gestart ? "Gepauzeerd" : "Klaar om te spelen";
+  $("groot-speel").innerHTML = speelt ? PAUZE : PLAY;
+  $("groot-speel").setAttribute("aria-label", speelt ? "Pauzeer" : "Speel " + n.titel);
+  $("mini-knop").innerHTML = speelt ? PAUZE : PLAY;
+  $("mini-knop").setAttribute("aria-label", speelt ? "Pauzeer" : "Speel verder");
+  $("mini-titel").textContent = n.titel; $("mini-meta").textContent = n.meta;
+  $("nu-plaat").parentElement.classList.toggle("draait", speelt);
+  $("mini-plaat").classList.toggle("draait", speelt);
+  $("tijd-tot").textContent = tijd(audio.duration || n.duur);
+  [...lijst.children].forEach((li, i) => li.classList.toggle("actief", gestart && i === huidig));
+  $("mini").classList.toggle("aan", gestart && actieveTab !== "luister");
+  tekenAlles();
+}
+$("groot-speel").addEventListener("click", () => gestart ? (audio.paused ? audio.play() : audio.pause()) : kies(huidig));
+$("mini-knop").addEventListener("click", () => audio.paused ? audio.play() : audio.pause());
+$("mini-tekst").addEventListener("click", () => kiesTab("luister"));
+$("mini-tekst").addEventListener("keydown", e => { if (e.key === "Enter") kiesTab("luister"); });
+$("nu-tekst").addEventListener("click", () => openTekst(huidig));
+["play", "pause"].forEach(ev => audio.addEventListener(ev, toon));
+audio.addEventListener("loadedmetadata", toon);
+audio.addEventListener("ended", () => huidig < NUMMERS.length - 1 ? kies(huidig + 1) : (audio.currentTime = 0, toon()));
+audio.addEventListener("timeupdate", () => {
+  const d = audio.duration || NUMMERS[huidig].duur, p = audio.currentTime / d * 100;
+  $("spoor-vul").style.width = p + "%";
+  $("spoor").setAttribute("aria-valuenow", Math.round(p));
+  $("tijd-nu").textContent = tijd(audio.currentTime);
+  tekenPlaat($("nu-plaat"), NUMMERS[huidig].id, voortgang());
+});
+const spoor = $("spoor");
+function zoek(e) { const r = spoor.getBoundingClientRect(); if (audio.duration) audio.currentTime = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * audio.duration; }
+spoor.addEventListener("pointerdown", e => { zoek(e); spoor.setPointerCapture(e.pointerId); });
+spoor.addEventListener("pointermove", e => { if (spoor.hasPointerCapture(e.pointerId)) zoek(e); });
+spoor.addEventListener("keydown", e => { if (e.key === "ArrowRight") audio.currentTime += 5; if (e.key === "ArrowLeft") audio.currentTime -= 5; });
+
+/* Bediening vanaf het vergrendelscherm */
+if ("mediaSession" in navigator) {
+  audio.addEventListener("play", () => {
+    const n = NUMMERS[huidig];
+    navigator.mediaSession.metadata = new MediaMetadata({ title: n.titel, artist: n.meta.startsWith("Palomine") ? "Palomine" : "David Janssen", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+  });
+  navigator.mediaSession.setActionHandler("previoustrack", () => kies(Math.max(0, huidig - 1)));
+  navigator.mediaSession.setActionHandler("nexttrack", () => kies(Math.min(NUMMERS.length - 1, huidig + 1)));
+}
+
+/* ---------- Songtekst ---------- */
+let laatsteFocus = null;
+function openLaag(laag) { laatsteFocus = document.activeElement; laag.hidden = false; requestAnimationFrame(() => laag.classList.add("open")); laag.querySelector("button").focus(); }
+function sluitLaag(laag) { laag.classList.remove("open"); setTimeout(() => { laag.hidden = true; }, 250); laatsteFocus?.focus(); }
+function openTekst(i) {
+  const n = NUMMERS[i], t = TEKSTEN[n.id];
+  $("tekst-titel").textContent = n.titel;
+  $("tekst-meta").textContent = n.meta;
+  const doel = $("tekst-inhoud"); doel.innerHTML = "";
+  const p = document.createElement("p");
+  if (t && t.trim()) { p.className = "songtekst"; p.textContent = t.trim(); }
+  else { p.className = "leeg"; p.textContent = "De tekst van dit nummer staat hier binnenkort."; }
+  doel.appendChild(p);
+  openLaag($("tekst-laag"));
+}
+$("tekst-sluit").addEventListener("click", () => sluitLaag($("tekst-laag")));
+$("tekst-laag").addEventListener("click", e => { if (e.target.id === "tekst-laag") sluitLaag($("tekst-laag")); });
+
+/* ---------- Foto's ---------- */
+const raster = $("raster");
+FOTOS.forEach((f, i) => {
+  const b = document.createElement("button");
+  b.className = "foto-knop" + (f.breed ? " breed" : "");
+  b.innerHTML = `<img src="${f.src}" alt="${f.alt}" loading="lazy"><span>${f.tekst}</span>`;
+  b.addEventListener("click", () => openFoto(i));
+  raster.appendChild(b);
+});
+let fotoNr = 0;
+function zetFoto(i) {
+  fotoNr = (i + FOTOS.length) % FOTOS.length;
+  const f = FOTOS[fotoNr];
+  $("foto-groot").src = f.src; $("foto-groot").alt = f.alt; $("foto-onderschrift").textContent = f.tekst;
+}
+function openFoto(i) { zetFoto(i); openLaag($("foto-laag")); }
+$("foto-sluit").addEventListener("click", () => sluitLaag($("foto-laag")));
+$("foto-vorige").addEventListener("click", () => zetFoto(fotoNr - 1));
+$("foto-volgende").addEventListener("click", () => zetFoto(fotoNr + 1));
+$("foto-laag").addEventListener("click", e => { if (e.target.id === "foto-laag") sluitLaag($("foto-laag")); });
+let veegX = null;
+$("foto-laag").addEventListener("touchstart", e => { veegX = e.touches[0].clientX; }, { passive: true });
+$("foto-laag").addEventListener("touchend", e => {
+  if (veegX === null) return;
+  const dx = e.changedTouches[0].clientX - veegX; veegX = null;
+  if (Math.abs(dx) > 50) zetFoto(fotoNr + (dx < 0 ? 1 : -1));
+});
+document.addEventListener("keydown", e => {
+  const foto = !$("foto-laag").hidden, tekst = !$("tekst-laag").hidden;
+  if (e.key === "Escape") { if (foto) sluitLaag($("foto-laag")); if (tekst) sluitLaag($("tekst-laag")); }
+  if (foto && e.key === "ArrowRight") zetFoto(fotoNr + 1);
+  if (foto && e.key === "ArrowLeft") zetFoto(fotoNr - 1);
+});
+
+const platen = $("platen");
+NUMMERS.forEach((n, i) => {
+  const b = document.createElement("button");
+  b.className = "plaat-knop";
+  b.innerHTML = `<canvas data-id="${n.id}" role="img" aria-label="Plaat getekend uit ${n.titel}"></canvas><span>${n.titel}</span>`;
+  b.addEventListener("click", () => kies(i));
+  platen.appendChild(b);
+});
+
+/* ---------- Tabbladen ---------- */
+const TABS = ["luister", "verhaal", "fotos"];
+const scroller = $("scroller"), scrollPlek = {};
+let actieveTab = "luister";
+function kiesTab(naam, schrijf = true) {
+  if (!TABS.includes(naam)) naam = "luister";
+  scrollPlek[actieveTab] = scroller.scrollTop;
+  actieveTab = naam;
+  TABS.forEach(t => {
+    $("scherm-" + t).hidden = t !== naam;
+    $("tab-" + t).setAttribute("aria-selected", t === naam);
+    $("tab-" + t).tabIndex = t === naam ? 0 : -1;
+  });
+  scroller.scrollTop = scrollPlek[naam] || 0;
+  if (schrijf) try { history.replaceState(null, "", "#" + naam); } catch (e) {}
+  toon();
+}
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => kiesTab(b.dataset.tab)));
+addEventListener("hashchange", () => kiesTab(location.hash.slice(1), false));
+
+/* ---------- Start ---------- */
+kiesTab(location.hash.slice(1) || "luister", false);
+document.fonts?.ready.then(tekenAlles);
+addEventListener("resize", tekenAlles);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", tekenAlles);
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
