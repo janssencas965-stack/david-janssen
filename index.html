@@ -180,9 +180,6 @@ p { margin: 0; }
 }
 .geplakt figcaption { font-family: var(--f-hand); color: var(--bic); font-size: 1.05rem; margin-top: 8px; }
 .geplakt figcaption .credit { font: 400 .7rem var(--f-mono); color: var(--potlood); margin-left: 6px; }
-.podium { aspect-ratio: 4 / 3; display: block; background: var(--plaat); }
-.podium-fig { margin: 24px 0 8px; }
-.podium-fig::before { display: none; }
 .feiten { margin: 0; display: grid; gap: 0; }
 .feit { display: grid; grid-template-columns: 110px minmax(0,1fr); gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--lijn); }
 .feit dt { padding-top: 3px; }
@@ -333,10 +330,6 @@ p { margin: 0; }
 
       <div class="sectie-kop"><h2>Getekend uit de muziek</h2></div>
       <p class="uitleg">Elke plaat is getekend uit de luidheid van een nummer: hoe luider de muziek op dat moment, hoe langer het streepje. Tik op een plaat om het nummer te spelen.</p>
-      <figure class="geplakt podium-fig">
-        <canvas class="podium" id="podium" role="img" aria-label="Een musicalpodium met lampjes, getekend uit Dit ben ik"></canvas>
-        <figcaption>The Greatest Showman: getekend uit Dit ben ik</figcaption>
-      </figure>
       <div class="platen" id="platen"></div>
     </section>
 
@@ -456,31 +449,11 @@ function tekenPlaat(c, id, p = -1, label = true) {
     x.fillText("DAVID JANSSEN", m, m - R * 0.12);
   }
 }
-function tekenPodium() {
-  const c = $("podium"), k = doek(c); if (!k) return;
-  const [x, w, h] = k, v = GOLVEN["dit-ben-ik"], n = v.length, groef = kleur("--groef"), bic = kleur("--bic");
-  x.clearRect(0, 0, w, h);
-  const g = x.createLinearGradient(0, h * 0.16, 0, h * 0.8);
-  g.addColorStop(0, bic + "66"); g.addColorStop(1, bic + "08");
-  x.fillStyle = g; x.beginPath(); x.moveTo(w * .44, h * .16); x.lineTo(w * .56, h * .16); x.lineTo(w * .85, h * .78); x.lineTo(w * .15, h * .78); x.fill();
-  const lampen = 34, cx = w / 2, cy = h * .78, rx = w * .44, ry = h * .66;
-  for (let i = 0; i < lampen; i++) {
-    const t = i / (lampen - 1), a = Math.PI + t * Math.PI, s = Math.floor(t * (n - 1));
-    x.globalAlpha = .25 + .75 * v[s]; x.fillStyle = groef;
-    x.beginPath(); x.arc(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, 1.6 + 3.2 * v[s] * (w / 500), 0, 7); x.fill();
-  }
-  const vloer = h * .88, bw = (w * .9) / n;
-  for (let i = 0; i < n; i++) { const hh = 2 + v[i] * h * .09; x.globalAlpha = .6; x.fillStyle = groef; x.fillRect(w * .05 + i * bw, vloer - hh / 2, Math.max(1, bw * .6), hh); }
-  x.globalAlpha = 1; x.fillStyle = groef; x.textAlign = "center";
-  x.font = `400 ${w * .065}px "Young Serif", Georgia, serif`; x.fillText("The Greatest Showman", w / 2, h * .5);
-  x.font = `500 ${w * .026}px "JetBrains Mono", monospace`; x.globalAlpha = .7; x.fillText("SCHOOLMUSICAL", w / 2, h * .58); x.globalAlpha = 1;
-}
 function voortgang() { return gestart && audio.duration ? audio.currentTime / audio.duration : -1; }
 function tekenAlles() {
   const id = NUMMERS[huidig].id;
   tekenPlaat($("nu-plaat"), id, voortgang());
   tekenPlaat($("mini-plaat"), id, -1, false);
-  if (!$("scherm-fotos").hidden) tekenPodium();
   if (!$("scherm-fotos").hidden) document.querySelectorAll(".plaat-knop canvas").forEach(c => tekenPlaat(c, c.dataset.id));
 }
 
