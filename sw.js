@@ -1,7 +1,7 @@
 // Bewaart de pagina, foto's en iconen zodat de app ook zonder internet opent.
 // Nummers worden niet bewaard: die streamen gewoon vanaf de server.
-const CACHE = "david-v2";
-const BESTANDEN = ["./", "index.html", "manifest.webmanifest", "img/david-portret.jpg", "img/palomine.jpg", "img/david-zon.jpg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
+const CACHE = "david-v3";
+const BESTANDEN = ["./", "index.html", "manifest.webmanifest", "img/david-portret.jpg", "img/palomine.jpg", "img/david-zon.jpg", "img/musical.jpg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(BESTANDEN)).then(() => self.skipWaiting()));
